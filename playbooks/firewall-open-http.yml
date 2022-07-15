@@ -1,0 +1,19 @@
+---
+- hosts: web
+  name: Open Web Ports 
+  become: yes
+
+  tasks:
+    - name: Change firewall configuration
+      firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+      loop:
+      - http
+      - https
+
+    - name: Reload firewall to apply changes
+      systemd:
+        name: firewalld
+        state: reloaded
